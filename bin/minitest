@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+$LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__),'..','lib'))
+require 'minitest'
+
+minitest = Minitest.new
+minitest.recent = (ARGV.first == "recent")
+minitest.start

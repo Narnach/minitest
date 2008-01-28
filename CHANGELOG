@@ -1,0 +1,5 @@
+== Version 0.1
+ * Rebuilt quick 'n dirty script into a cleaner class
+ * Created gemspec
+ * Added a bare minimum of documentation
+ * Licensed gem under the MIT license

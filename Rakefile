@@ -2,6 +2,7 @@ require "rake"
 require "rake/clean"
 require "rake/gempackagetask"
 require 'rubygems'
+require 'lib/minitest'
 
 ################################################################################
 ### Gem
@@ -9,7 +10,7 @@ require 'rubygems'
 
 spec = Gem::Specification.new do |s|
   s.name         = 'minitest'
-  s.version      = '0.1'
+  s.version      = Minitest::VERSION
   s.platform     = Gem::Platform::RUBY
   s.author       = "Wes Oldenbeuving"
   s.email        = "narnach@gmail.com"

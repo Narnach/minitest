@@ -1,3 +1,6 @@
+== Version 0.1.1
+ * Fixed bug in first run which would forget to load specs for changed files, but run those files as specs themselves.
+ * Fixed bug where the first run ran without 'recent' option would not properly mapfiles to specs.
 == Version 0.1
  * Rebuilt quick 'n dirty script into a cleaner class
  * Created gemspec

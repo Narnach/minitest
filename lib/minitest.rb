@@ -3,6 +3,7 @@ gem 'rspec', '>= 1.1.2'
 gem 'rcov', '>= 0.8.1.2.0'
 
 class Minitest
+  VERSION = '0.1.1'
   attr_reader :file_mtime
   attr_reader :file_spec
   attr_accessor :rcov_ignores
@@ -110,6 +111,7 @@ private
 
   def find_first_run_specs
     need_checking = self.file_mtime.keys.dup
+    specs_to_check = []
     if first_run? and recent?
       need_checking.reject! { |file| @file_mtime[file] < ( Time.now - recent_time ) }
       if need_checking.size > 0
@@ -118,8 +120,11 @@ private
         puts "No files were changed in the last hour, so no files are tested for the first run."
       end
     end
+    specs_to_check = need_checking.map {|f| @file_spec[f]}
+    specs_to_check.uniq!
+    specs_to_check.sort!
     @first_run = false
-    return need_checking.sort
+    return specs_to_check
   end
   
   def find_sources_for_spec(spec)

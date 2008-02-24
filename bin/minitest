@@ -3,5 +3,6 @@ $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__),'..','lib')
 require 'minitest'
 
 minitest = Minitest.new
-minitest.recent = (ARGV.first == "recent")
+minitest.recent = (ARGV.include? "recent")
+minitest.spec_opts = "--format profile --colour --diff unified" if ARGV.include? "profile"
 minitest.start

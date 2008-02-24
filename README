@@ -3,8 +3,9 @@ Minitest is a simple autotester intended to be used with rSpec and rCov.
 It can be used with 'plain' ruby projects and Ruby on Rails.
 
 == Usage
-Minitest has one command line option:
-  recent  Only specs for files modified within the last hour are executed on the first run.
+Minitest has the following command line options:
+recent::   Only specs for files modified within the last hour are executed on the first run.
+profile::  Force rspec output format to 'profile', combined with coloured output and unified diffs.
 
 == Author
 Wes 'Narnach' Oldenbeuving

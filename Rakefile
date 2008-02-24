@@ -24,7 +24,7 @@ spec = Gem::Specification.new do |s|
 
   # rdoc
   s.has_rdoc         = true
-  s.extra_rdoc_files = %w( README TODO )
+  s.extra_rdoc_files = %w( README TODO CHANGELOG )
 
   # Dependencies
   s.add_dependency 'rspec', "> 0.0.0"

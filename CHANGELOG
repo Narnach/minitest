@@ -1,3 +1,5 @@
+== Version 0.1.2
+ * Added 'profile' option. This will ignore the spec.opts file and force the output to be formatted using 'profile' and also have colour and unified diffs.
 == Version 0.1.1
  * Fixed bug in first run which would forget to load specs for changed files, but run those files as specs themselves.
  * Fixed bug where the first run ran without 'recent' option would not properly mapfiles to specs.

@@ -3,7 +3,7 @@ gem 'rspec', '>= 1.1.2'
 gem 'rcov', '>= 0.8.1.2.0'
 
 class Minitest
-  VERSION = '0.1.1'
+  VERSION = '0.1.2'
   attr_reader :file_mtime
   attr_reader :file_spec
   attr_accessor :rcov_ignores

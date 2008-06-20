@@ -1,3 +1,5 @@
+== Version 0.1.3
+ * The rspec path is no longer hard-coded, but determined using 'which'. The same goes for rcov.
 == Version 0.1.2
  * Added 'profile' option. This will ignore the spec.opts file and force the output to be formatted using 'profile' and also have colour and unified diffs.
 == Version 0.1.1

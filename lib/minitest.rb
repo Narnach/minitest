@@ -3,7 +3,7 @@ gem 'rspec', '>= 1.1.2'
 gem 'rcov', '>= 0.8.1.2.0'
 
 class Minitest
-  VERSION = '0.1.2'
+  VERSION = '0.1.3'
   attr_reader :file_mtime
   attr_reader :file_spec
   attr_accessor :rcov_ignores
@@ -37,7 +37,7 @@ class Minitest
 
   # Command line string to run rcov for all monitored specs.
   def rcov
-    "rcov -T --exclude \"#{self.rcov_ignores}\" -Ilib /usr/bin/spec -- " + self.unique_specs.join(" ")
+    "#{rcov_cmd} -T --exclude \"#{rcov_ignores}\" -Ilib #{spec_cmd} -- " + self.unique_specs.join(" ")
   end
 
   def recent?
@@ -52,7 +52,7 @@ class Minitest
 
   # Command line string to run rspec for an array of specs. Defaults to all specs.
   def rspec(specs=self.unique_specs)
-    "#{self.spec_cmd} #{specs.join(" ")} #{self.spec_opts}"
+    "#{spec_cmd} #{specs.join(" ")} #{spec_opts}"
   end
 
   def source_dirs
@@ -62,10 +62,14 @@ class Minitest
   def source_extensions
     @source_extensions || %w[rb haml rhtml erb]
   end
+  
+  def rcov_cmd
+    @rcov_cmd ||= find_rcov_cmd
+  end
 
   # The command to use to run specs.
   def spec_cmd
-    @spec_cmd ||= ( File.exist?('script/spec') ? 'script/spec' : 'spec' )
+    @spec_cmd ||= ( File.exist?('script/spec') ? 'script/spec' : find_spec_cmd )
   end
 
   def spec_opts
@@ -141,6 +145,14 @@ private
     end
     found_files.uniq!
     return found_files
+  end
+  
+  def find_rcov_cmd
+    `which rcov`.strip
+  end
+  
+  def find_spec_cmd
+    `which spec`.strip
   end
 
   def find_specs

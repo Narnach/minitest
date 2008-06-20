@@ -37,3 +37,8 @@ end
 Rake::GemPackageTask.new(spec) do |package|
   package.gem_spec = spec
 end
+
+desc 'Package and install the gem for the current version'
+task :install => :gem do
+  system "sudo gem install -l pkg/minitest-%s.gem" % Minitest::VERSION
+end

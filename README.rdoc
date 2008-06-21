@@ -3,19 +3,15 @@ Minitest is a simple autotester intended to be used with rSpec and rCov.
 It can be used with 'plain' ruby projects and Ruby on Rails.
 
 == Installation
-=== The easy way
-The easy way is to use:
+=== From gem
+Use gem to install minitest. The gem is located on github.
+  sudo gem install narnach-minitest -s http://gems.github.com
+=== From git
+From the project root, use rake to install:
+  git clone git://github.com/Narnach/minitest.git
+  cd minitest
   rake install
 This will build the gem and install it for you.
-
-=== The hard way
-Alternatively, you can do everything yourself. 
-This allows you to fine-tune the gem installation.
-
-Use rake to build the gem:
-  rake gem
-Then install it:
-  sudo gem install -l pkg/minitest-<version>.gem
 
 == Usage
 Minitest has the following command line options:

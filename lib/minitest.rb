@@ -1,7 +1,3 @@
-require 'rubygems'
-gem 'rspec', '>= 1.1.2'
-gem 'rcov', '>= 0.8.1.2.0'
-
 # = Minitest
 # The default usage of Minitest is this:
 #   minitest = Minitest.new
@@ -13,7 +9,6 @@ gem 'rcov', '>= 0.8.1.2.0'
 # - Every second, check all known relevant files: if their mtime changes, run rspec on their spec file.
 # - Run rcov (code coverage tester) on all specs when exiting (Press ctrl-C on send SIGINT to the process)
 class Minitest
-  VERSION = '0.1.3'
   attr_reader :file_mtime
   attr_reader :file_spec
   attr_accessor :rcov_ignores

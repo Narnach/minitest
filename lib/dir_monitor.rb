@@ -20,7 +20,12 @@ class DirMonitor
   # Scan for all files in the directories and their sub-directories.
   # The results are stored as a single array in known.
   def scan
-    @known = dirs.map {|dir| Dir.glob(File.join(dir,'**','*'))}.flatten
+    results = []
+    dirs.each do |dir|
+      files_in_dir = Dir.glob(File.join(dir,'**','*'))
+      results.concat(files_in_dir)
+    end
+    @known = results
   end
   
   # Scan for new files.

@@ -33,7 +33,8 @@ class DirMonitor
   def scan_new(&block) # :yields: file
     old_known_files = @known_files
     scan
-    (known_files - old_known_files).each do |new_file|
+    new_files = known_files - old_known_files
+    new_files.each do |new_file|
       block.call(new_file)
     end
   end

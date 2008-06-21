@@ -59,7 +59,8 @@ class DirMonitor
     base = File.basename(file)
     extension = File.extname(base)
     dir = File.dirname(file)
-    if extension == '.rb' and dir.split('/').first=='spec'
+    dir_array = dir.split('/')
+    if extension == '.rb' and dir_array.first=='spec'
       return file
     end
     if extension == '.rb'

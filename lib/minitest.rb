@@ -48,6 +48,7 @@ class Minitest
   # Partial filepaths to exclude from rcov output
   def rcov_ignores
     ignores = @rcov_ignores || DEFAULT_RCOV_IGNORES
+    ignores << spec_cmd
     ignores.join(",")
   end
 

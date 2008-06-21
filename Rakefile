@@ -25,6 +25,7 @@ spec = Gem::Specification.new do |s|
   # rdoc
   s.has_rdoc         = true
   s.extra_rdoc_files = Dir["*.rdoc"]
+  s.rdoc_options << '--inline-source' << '--line-numbers' << '--main' << 'README.rdoc'
 
   # Dependencies
   s.add_dependency 'rspec', "> 0.0.0"

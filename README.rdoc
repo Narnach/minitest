@@ -22,6 +22,16 @@ Minitest has the following command line options:
 recent::   Only specs for files modified within the last hour are executed on the first run. All files are still monitored for changes, though.
 profile::  Force rspec output format to 'profile', combined with coloured output and unified diffs.
 
+== Examples
+When you start working on a codebase, it makes sense to run all specs:
+  minitest
+When you resume work on a codebase you recently worked on, it might be useful skip running the specs for unchanged files on the first run:
+  minitest recent
+When you want to see which specs are slow and could use optimizing:
+  minitest profile
+You can also combine options:
+  minitest recent profile
+
 == Author
 Wes 'Narnach' Oldenbeuving
 Email: narnach@gmail.com

@@ -28,6 +28,16 @@ class DirMonitor
     end
   end
   
+  # Scans for new files, like scan_new does, but yields the name of both the file and spec.
+  # spec_for is used to determine what the name of the file's spec _should_ be.
+  # Does not yield a file/spec name when the spec does not exist.
+  def scan_new_with_spec(&block)
+    scan_new do |file|
+      spec = spec_for(file)
+      block.call(file, spec) if File.exists?(spec)
+    end
+  end
+  
   # Find the (theoretical) spec file name for a given file.
   # The assumptions are:
   # - All specs reside in the 'spec' directory.

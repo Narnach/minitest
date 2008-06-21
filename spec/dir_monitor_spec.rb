@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__),'..','lib'))
 require 'dir_monitor'
 
-describe DirMonitor do
+describe DirMonitor, ".new" do
   it "should accept multiple directories" do
     dm = DirMonitor.new('lib','app')
     dm.dirs.should == ['lib','app']
@@ -19,15 +19,7 @@ describe DirMonitor do
 end
 
 describe DirMonitor, "#scan" do
-  it "should find all files in a directory" do
-    known_files = %w[lib/minitest.rb lib/dir_monitor.rb]
-    Dir.should_receive(:glob).with('lib/**/*').and_return(known_files)
-    dm = DirMonitor.new('lib')
-    dm.scan
-    dm.known_files.should == known_files
-  end
-  
-  it "should find all files in multiple directories" do
+  it "should find all files in the directories" do
     known_files1 = %w[lib/minitest.rb lib/dir_monitor.rb]
     known_files2 = %w[app/another.rb app/files.rb app/more/things.txt]
     Dir.should_receive(:glob).with('lib/**/*').and_return(known_files1)

@@ -32,10 +32,8 @@ When you want to see which specs are slow and could use optimizing:
 You can also combine options:
   minitest recent profile
 
-== Author
-Wes 'Narnach' Oldenbeuving
-Email: narnach@gmail.com
-
-== Copyright
-Copyright (c) 2008 Wes Oldenbeuving, released under the MIT license.
-See MIT-LICENSE in the gem directory for license details.
+== About
+Author:: Wes 'Narnach' Oldenbeuving (narnach@gmail.com)
+Website:: http://www.github.com/Narnach/minitest
+Copyright:: Copyright (c) 2008 Wes Oldenbeuving
+License:: MIT license. See MIT-LICENSE (in the gem directory) for license details.

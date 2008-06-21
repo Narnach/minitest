@@ -14,17 +14,17 @@ spec = Gem::Specification.new do |s|
   s.platform     = Gem::Platform::RUBY
   s.author       = "Wes Oldenbeuving"
   s.email        = "narnach@gmail.com"
-  s.homepage     = "http://www.narnach.com"
+  s.homepage     = "http://www.github.com/Narnach/minitest"
   s.summary      = "A simple autotester tool."
   s.bindir       = "bin"
   s.description  = s.summary
   s.executables  = %w[minitest]
   s.require_path = "lib"
-  s.files        = Dir["*.rdoc"] + %w( Rakefile ) + Dir["{spec,lib,bin}/**/*"]
+  s.files        = Dir["*.rdoc"] + %w( Rakefile MIT-LICENSE ) + Dir["{spec,lib,bin}/**/*"]
 
   # rdoc
   s.has_rdoc         = true
-  s.extra_rdoc_files = Dir["*.rdoc"]
+  s.extra_rdoc_files = Dir["*.rdoc"] + %w( MIT-LICENSE )
   s.rdoc_options << '--inline-source' << '--line-numbers' << '--main' << 'README.rdoc'
 
   # Dependencies

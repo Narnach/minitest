@@ -24,6 +24,11 @@ class Minitest
   attr_accessor :spec_cmd
   attr_accessor :spec_opts
   
+  DEFAULT_RCOV_IGNORES = "spec/,db/,/usr/bin/spec,plugins/,vendor/,config/"
+  DEFAULT_RECENT_TIME = 3600
+  DEFAULT_SOURCE_DIRS = %w[lib app]
+  DEFAULT_SOURCE_EXTENSIONS = %w[rb haml rhtml erb]
+  
   def initialize
     @file_spec  = {}   # Map files to their specs
     @file_mtime = {}   # Map files to their mtimes
@@ -42,7 +47,7 @@ class Minitest
 
   # Partial filepaths to exclude from rcov output
   def rcov_ignores
-    @rcov_ignores || "spec/,db/,/usr/bin/spec,plugins/,vendor/,config/"
+    @rcov_ignores || DEFAULT_RCOV_IGNORES
   end
 
   # Command line string to run rcov for all monitored specs.
@@ -57,7 +62,7 @@ class Minitest
   # Maximum amount of seconds since a file has been changed for it to count as
   # recently changed.
   def recent_time
-    @recent_time || 3600
+    @recent_time || DEFAULT_RECENT_TIME
   end
 
   # Command line string to run rspec for an array of specs. Defaults to all specs.
@@ -66,11 +71,11 @@ class Minitest
   end
 
   def source_dirs
-    @source_dirs || %w[lib app]
+    @source_dirs || DEFAULT_SOURCE_DIRS
   end
 
   def source_extensions
-    @source_extensions || %w[rb haml rhtml erb]
+    @source_extensions || DEFAULT_SOURCE_EXTENSIONS
   end
   
   def rcov_cmd

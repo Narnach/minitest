@@ -19,7 +19,7 @@ Then install it:
 
 == Usage
 Minitest has the following command line options:
-recent::   Only specs for files modified within the last hour are executed on the first run.
+recent::   Only specs for files modified within the last hour are executed on the first run. All files are still monitored for changes, though.
 profile::  Force rspec output format to 'profile', combined with coloured output and unified diffs.
 
 == Author

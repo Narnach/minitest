@@ -14,7 +14,7 @@ describe DirMonitor do
   
   it "should have no known files" do
     dm = DirMonitor.new('lib')
-    dm.known.should == []
+    dm.known_files.should == []
   end
 end
 
@@ -24,7 +24,7 @@ describe DirMonitor, "#scan" do
     Dir.should_receive(:glob).with('lib/**/*').and_return(known_files)
     dm = DirMonitor.new('lib')
     dm.scan
-    dm.known.should == known_files
+    dm.known_files.should == known_files
   end
   
   it "should find all files in multiple directories" do
@@ -34,7 +34,7 @@ describe DirMonitor, "#scan" do
     Dir.should_receive(:glob).with('app/**/*').and_return(known_files2)
     dm = DirMonitor.new('lib', 'app')
     dm.scan
-    dm.known.should == known_files1 + known_files2
+    dm.known_files.should == known_files1 + known_files2
   end
 end
 

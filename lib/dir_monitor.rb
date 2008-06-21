@@ -4,7 +4,7 @@
 # - Keep track of changed files in monitored directories.
 # - Link these files to their specs, so Minitest can run the specs.
 class DirMonitor
-  attr_reader :known, :dirs
+  attr_reader :known_files, :dirs
   
   # Setup a new DirMonitor.
   # Directories can be provided in a number of ways:
@@ -14,26 +14,26 @@ class DirMonitor
   # Each of these examples will result in the same list of directories being stored for use.
   def initialize(*dirs)
     @dirs = dirs.flatten.map{|dir| dir.to_s}
-    @known = []
+    @known_files = []
   end
   
   # Scan for all files in the directories and their sub-directories.
-  # The results are stored as a single array in known.
+  # The results are stored as a single array in @known_files.
   def scan
     results = []
     dirs.each do |dir|
       files_in_dir = Dir.glob(File.join(dir,'**','*'))
       results.concat(files_in_dir)
     end
-    @known = results
+    @known_files = results
   end
   
   # Scan for new files.
   # All new file names are yielded.
   def scan_new(&block) # :yields: file
-    old_known = @known
+    old_known_files = @known_files
     scan
-    (known - old_known).each do |new_file|
+    (known_files - old_known_files).each do |new_file|
       block.call(new_file)
     end
   end

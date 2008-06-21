@@ -24,7 +24,7 @@ class Minitest
   attr_accessor :spec_cmd
   attr_accessor :spec_opts
   
-  DEFAULT_RCOV_IGNORES = "spec/,db/,/usr/bin/spec,plugins/,vendor/,config/"
+  DEFAULT_RCOV_IGNORES = %w[spec/ db/ plugins/ vendor/ config/]
   DEFAULT_RECENT_TIME = 3600
   DEFAULT_SOURCE_DIRS = %w[lib app]
   DEFAULT_SOURCE_EXTENSIONS = %w[rb haml rhtml erb]
@@ -47,7 +47,8 @@ class Minitest
 
   # Partial filepaths to exclude from rcov output
   def rcov_ignores
-    @rcov_ignores || DEFAULT_RCOV_IGNORES
+    ignores = @rcov_ignores || DEFAULT_RCOV_IGNORES
+    ignores.join(",")
   end
 
   # Command line string to run rcov for all monitored specs.

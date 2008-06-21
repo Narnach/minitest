@@ -27,4 +27,27 @@ class DirMonitor
       block.call(new_file)
     end
   end
+  
+  # Find the (theoretical) spec file name for a given file.
+  # The assumptions are:
+  # - All specs reside in the 'spec' directory.
+  # - All specs file names have the suffix '_spec.rb', instead of only the '.rb' extension.
+  # - The file name for a non-ruby file spec simply has '_spec.rb' suffixed to the entire file name.
+  # The returned file name does not necessarily have to exist.
+  def spec_for(file)
+    base = File.basename(file)
+    extension = File.extname(base)
+    dir = File.dirname(file)
+    if extension == '.rb' and dir.split('/').first=='spec'
+      return file
+    end
+    if extension == '.rb'
+      base_without_extension = base[0, base.size - extension.size]
+      spec_file = base_without_extension + '_spec' + extension
+    else
+      spec_file = base + '_spec.rb'
+    end
+    spec_dir = dir.gsub(/\A[^\/]*/,'spec')
+    return File.join(spec_dir, spec_file)
+  end
 end

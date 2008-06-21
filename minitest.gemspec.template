@@ -1,8 +1,8 @@
 Gem::Specification.new do |s|
   # Project
   s.name         = 'minitest'
-  s.summary      = "A simple autotester tool."
-  s.description  = "Minitest is a simple autotester tool."
+  s.summary      = "Minitest is a simple autotester tool."
+  s.description  = "Minitest is a simple autotester tool, which uses rSpec and rCov to test ruby and rails projects."
   s.version      = '0.2'
   s.date         = '2008-06-21'
   s.platform     = Gem::Platform::RUBY

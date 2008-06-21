@@ -69,7 +69,8 @@ class DirMonitor
     else
       spec_file = base + '_spec.rb'
     end
-    spec_dir = dir.gsub(/\A[^\/]*/,'spec')
+    dir_array[0]='spec'
+    spec_dir = dir_array.join('/')
     return File.join(spec_dir, spec_file)
   end
 end

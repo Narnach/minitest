@@ -1,0 +1,65 @@
+$LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__),'..','lib'))
+require 'dir_monitor'
+
+describe DirMonitor do
+  it "should accept multiple directories" do
+    dm = DirMonitor.new('lib','app')
+    dm.dirs.should == ['lib','app']
+  end
+
+  it "should accept an array with multiple directories" do
+    dm = DirMonitor.new(%w[lib app])
+    dm.dirs.should == ['lib','app']
+  end
+  
+  it "should have no known files" do
+    dm = DirMonitor.new('lib')
+    dm.known.should == []
+  end
+end
+
+describe DirMonitor, "#scan" do
+  it "should find all files in a directory" do
+    known_files = %w[lib/minitest.rb lib/dir_monitor.rb]
+    Dir.should_receive(:glob).with('lib/**/*').and_return(known_files)
+    dm = DirMonitor.new('lib')
+    dm.scan
+    dm.known.should == known_files
+  end
+  
+  it "should find all files in multiple directories" do
+    known_files1 = %w[lib/minitest.rb lib/dir_monitor.rb]
+    known_files2 = %w[app/another.rb app/files.rb app/more/things.txt]
+    Dir.should_receive(:glob).with('lib/**/*').and_return(known_files1)
+    Dir.should_receive(:glob).with('app/**/*').and_return(known_files2)
+    dm = DirMonitor.new('lib', 'app')
+    dm.scan
+    dm.known.should == known_files1 + known_files2
+  end
+end
+
+describe DirMonitor, "#scan_new" do
+  it "should yield the names of all new files" do
+    known_files = %w[lib/minitest.rb lib/dir_monitor.rb]
+    Dir.should_receive(:glob).with('lib/**/*').and_return(known_files)
+    dm = DirMonitor.new('lib')
+    yield_results = []
+    dm.scan_new do |file|
+      yield_results << file
+    end
+    yield_results.should == known_files
+  end
+  
+  it "should not yield known file names" do
+    known_files = %w[lib/minitest.rb lib/dir_monitor.rb]
+    known_files2 = %w[lib/minitest.rb lib/dir_monitor2.rb]
+    Dir.should_receive(:glob).with('lib/**/*').and_return(known_files, known_files2)
+    dm = DirMonitor.new('lib')
+    dm.scan
+    yield_results = []
+    dm.scan_new do |file|
+      yield_results << file
+    end
+    yield_results.should == known_files2 - known_files
+  end
+end

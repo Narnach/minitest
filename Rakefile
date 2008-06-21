@@ -20,11 +20,11 @@ spec = Gem::Specification.new do |s|
   s.description  = s.summary
   s.executables  = %w[minitest]
   s.require_path = "lib"
-  s.files        = %w( README Rakefile CHANGELOG TODO) + Dir["{spec,lib,bin}/**/*"]
+  s.files        = Dir["*.rdoc"] + %w( Rakefile ) + Dir["{spec,lib,bin}/**/*"]
 
   # rdoc
   s.has_rdoc         = true
-  s.extra_rdoc_files = %w( README TODO CHANGELOG )
+  s.extra_rdoc_files = Dir["*.rdoc"]
 
   # Dependencies
   s.add_dependency 'rspec', "> 0.0.0"

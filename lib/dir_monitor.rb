@@ -1,3 +1,8 @@
+# Dirmonitor's purpose is to serve as a file monitoring helper for Minitest.
+# Its intended functionality is:
+# - Keep track of new files in monitored directories.
+# - Keep track of changed files in monitored directories.
+# - Link these files to their specs, so Minitest can run the specs.
 class DirMonitor
   attr_reader :known, :dirs
   

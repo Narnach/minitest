@@ -5,7 +5,7 @@ It can be used with 'plain' ruby projects and Ruby on Rails.
 == Installation
 === From gem
 Use gem to install minitest. The gem is located on github.
-  sudo gem install narnach-minitest -s http://gems.github.com
+  sudo gem install Narnach-minitest -s http://gems.github.com
 === From git
 From the project root, use rake to install:
   git clone git://github.com/Narnach/minitest.git

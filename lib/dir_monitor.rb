@@ -20,7 +20,7 @@ class DirMonitor
   
   # Scan for new files.
   # All new file names are yielded.
-  def scan_new(&block)
+  def scan_new(&block) # :yields: file
     old_known = @known
     scan
     (known - old_known).each do |new_file|
@@ -31,7 +31,7 @@ class DirMonitor
   # Scans for new files, like scan_new does, but yields the name of both the file and spec.
   # spec_for is used to determine what the name of the file's spec _should_ be.
   # Does not yield a file/spec name when the spec does not exist.
-  def scan_new_with_spec(&block)
+  def scan_new_with_spec(&block) # :yields: file, spec
     scan_new do |file|
       spec = spec_for(file)
       block.call(file, spec) if File.exists?(spec)

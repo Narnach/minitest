@@ -4,7 +4,7 @@
 # - Keep track of changed files in monitored directories.
 # - Link these files to their specs, so Minitest can run the specs.
 class DirMonitor
-  attr_reader :known_files, :dirs
+  attr_reader :known_files, :dirs, :last_mtime
   
   # Setup a new DirMonitor.
   # Directories can be provided in a number of ways:
@@ -15,6 +15,7 @@ class DirMonitor
   def initialize(*dirs)
     @dirs = dirs.flatten.map{|dir| dir.to_s}
     @known_files = []
+    @last_mtime = {}
   end
   
   # Scan for all files in the directories and their sub-directories.
@@ -26,6 +27,19 @@ class DirMonitor
       results.concat(files_in_dir)
     end
     @known_files = results
+  end
+  
+  # Scan for changes in the known files.
+  # Yields the name of the changed files.
+  # Stores the mtime for all changed files.
+  def scan_changed(&block) # :yields: file
+    known_files.each do |known_file|
+      new_mtime = mtime_for(known_file)
+      if new_mtime != last_mtime[known_file]
+        block.call(known_file)
+        last_mtime[known_file]= new_mtime
+      end
+    end
   end
   
   # Scan for new files.
@@ -72,5 +86,12 @@ class DirMonitor
     dir_array[0]='spec'
     spec_dir = dir_array.join('/')
     return File.join(spec_dir, spec_file)
+  end
+
+private
+
+  # Get the modification time for a file.
+  def mtime_for(file)
+    File.mtime(file)
   end
 end

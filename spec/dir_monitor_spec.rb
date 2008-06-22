@@ -84,6 +84,46 @@ describe DirMonitor, "#scan_new_with_spec" do
   end
 end
 
+describe DirMonitor, "#scan_changed" do
+  before(:each) do
+    @file = 'lib/dir_monitor.rb'
+    @time = Time.now
+    Dir.stub!(:glob).with('lib/**/*').and_return([@file])
+    File.stub!(:mtime).with(@file).and_return(@time)
+    @dm = DirMonitor.new 'lib'
+    @dm.scan
+  end
+  
+  it "should yield the names of changed known files" do
+    changes = []
+    @dm.scan_changed do |changed_file|
+      changes << changed_file
+    end
+    changes.should == [@file]
+  end
+  
+  it "should not yield the names of files which did not change since last scan" do
+    @dm.scan_changed { |f| }
+    changes = []
+    @dm.scan_changed do |changed_file|
+      changes << changed_file
+    end
+    changes.should == []
+  end
+
+  it "should yield for every change in a file" do
+    # Every scan should find the file changed:
+    File.should_receive(:mtime).with(@file).and_return(@time-3,@time-2,@time-1)
+    3.times do
+      changes = []
+      @dm.scan_changed do |changed_file|
+        changes << changed_file
+      end
+      changes.should == [@file]
+    end
+  end
+end
+
 describe DirMonitor, "#spec_for" do
   it "should find the spec for a given file" do
     file = 'lib/dir_monitor.rb'

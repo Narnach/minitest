@@ -154,6 +154,46 @@ describe DirMonitor, "scan_changed_with_spec" do
   end
 end
 
+describe DirMonitor, "scan_new_or_changed_with_spec" do
+  before(:each) do
+    @file = 'lib/dir_monitor.rb'
+    @spec = 'spec/dir_monitor_spec.rb'
+    @time = Time.now
+    Dir.stub!(:glob).with('lib/**/*').and_return([@file])
+    File.stub!(:mtime).with(@file).and_return(@time)
+    @dm = DirMonitor.new 'lib'
+  end
+  
+  it "should yield a file and spec when a file is new" do
+    results = []
+    @dm.scan_new_or_changed_with_spec do |file, spec|
+      results << {file => spec}
+    end
+    results.should == [{@file=>@spec}]
+  end
+  
+  it "should yield a file and spec when a file is not new but has changed" do
+    @dm.scan
+    @dm.scan_changed {|f|}
+    File.should_receive(:mtime).with(@file).and_return(@time+1)
+    results = []
+    @dm.scan_new_or_changed_with_spec do |file, spec|
+      results << {file => spec}
+    end
+    results.should == [{@file=>@spec}]
+  end
+  
+  it "should not yield a file and spec when a file is not new and has not changed" do
+    @dm.scan
+    @dm.scan_changed {|f|}
+    results = []
+    @dm.scan_new_or_changed_with_spec do |file, spec|
+      results << {file => spec}
+    end
+    results.should == []
+  end
+end
+
 describe DirMonitor, "#spec_for" do
   before(:each) do
     @dm = DirMonitor.new

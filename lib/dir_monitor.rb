@@ -63,6 +63,19 @@ class DirMonitor
     end
   end
   
+  # Scan for new files and check for changed known files.
+  # Only yields a file once per call.
+  def scan_new_or_changed_with_spec(&block) # :yields: file, spec
+    yielded_files = {}
+    yield_once_block = Proc.new do |file, spec|
+      next if yielded_files.has_key? file
+      block.call(file, spec)
+      yielded_files[file]=nil
+    end
+    scan_new_with_spec(&yield_once_block)
+    scan_changed_with_spec(&yield_once_block) 
+  end
+  
   # Scans for new files, like scan_new does, but yields the name of both the file and spec.
   # spec_for is used to determine what the name of the file's spec _should_ be.
   # Does not yield a file/spec name when the spec does not exist.

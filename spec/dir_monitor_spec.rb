@@ -31,28 +31,29 @@ describe DirMonitor, "#scan" do
 end
 
 describe DirMonitor, "#scan_new" do
+  before(:each) do
+    @known_files = %w[lib/minitest.rb lib/dir_monitor.rb]
+    Dir.stub!(:glob).with('lib/**/*').and_return(@known_files)
+    @dm = DirMonitor.new 'lib'
+  end
+  
   it "should yield the names of all new files" do
-    known_files = %w[lib/minitest.rb lib/dir_monitor.rb]
-    Dir.should_receive(:glob).with('lib/**/*').and_return(known_files)
-    dm = DirMonitor.new('lib')
     yield_results = []
-    dm.scan_new do |file|
+    @dm.scan_new do |file|
       yield_results << file
     end
-    yield_results.should == known_files
+    yield_results.should == @known_files
   end
   
   it "should not yield known file names" do
-    known_files = %w[lib/minitest.rb lib/dir_monitor.rb]
     known_files2 = %w[lib/minitest.rb lib/dir_monitor2.rb]
-    Dir.should_receive(:glob).with('lib/**/*').and_return(known_files, known_files2)
-    dm = DirMonitor.new('lib')
-    dm.scan
+    Dir.stub!(:glob).with('lib/**/*').and_return(@known_files, known_files2)
+    @dm.scan
     yield_results = []
-    dm.scan_new do |file|
+    @dm.scan_new do |file|
       yield_results << file
     end
-    yield_results.should == known_files2 - known_files
+    yield_results.should == known_files2 - @known_files
   end
 end
 

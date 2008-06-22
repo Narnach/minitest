@@ -56,28 +56,6 @@ describe DirMonitor, "#scan_new" do
   end
 end
 
-describe DirMonitor, "#spec_for" do
-  it "should find the spec for a given file" do
-    file = 'lib/dir_monitor.rb'
-    spec = 'spec/dir_monitor_spec.rb'
-    dm = DirMonitor.new
-    dm.spec_for(file).should == spec
-  end
-  
-  it "should find the spec for non-ruby files" do
-    file = 'app/views/posts/post.html.haml'
-    spec = 'spec/views/posts/post.html.haml_spec.rb'
-    dm = DirMonitor.new
-    dm.spec_for(file).should == spec
-  end
-  
-  it "should map specs to themselves" do
-    spec = 'spec/dir_monitor_spec.rb'
-    dm = DirMonitor.new
-    dm.spec_for(spec).should == spec
-  end
-end
-
 describe DirMonitor, "#scan_new_with_spec" do
   it "should yield new files and their specs" do
     file = 'lib/dir_monitor.rb'
@@ -103,5 +81,27 @@ describe DirMonitor, "#scan_new_with_spec" do
       results << {new_file => new_spec}
     end
     results.should == []
+  end
+end
+
+describe DirMonitor, "#spec_for" do
+  it "should find the spec for a given file" do
+    file = 'lib/dir_monitor.rb'
+    spec = 'spec/dir_monitor_spec.rb'
+    dm = DirMonitor.new
+    dm.spec_for(file).should == spec
+  end
+  
+  it "should find the spec for non-ruby files" do
+    file = 'app/views/posts/post.html.haml'
+    spec = 'spec/views/posts/post.html.haml_spec.rb'
+    dm = DirMonitor.new
+    dm.spec_for(file).should == spec
+  end
+  
+  it "should map specs to themselves" do
+    spec = 'spec/dir_monitor_spec.rb'
+    dm = DirMonitor.new
+    dm.spec_for(spec).should == spec
   end
 end

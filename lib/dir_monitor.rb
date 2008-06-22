@@ -42,6 +42,16 @@ class DirMonitor
     end
   end
   
+  # Scans for changed known files, using #scan_changed. Yields the name of both the file and its associated spec.
+  # spec_for is used to determine what the name of the file's spec _should_ be.
+  # Does not yield a file/spec name when the spec does not exist.
+  def scan_changed_with_spec(&block) # :yields: file, spec
+    scan_changed do |file|
+      spec = spec_for(file)
+      block.call(file, spec) if File.exists?(spec)
+    end
+  end
+  
   # Scan for new files.
   # All new file names are yielded.
   def scan_new(&block) # :yields: file

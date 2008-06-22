@@ -58,27 +58,26 @@ describe DirMonitor, "#scan_new" do
 end
 
 describe DirMonitor, "#scan_new_with_spec" do
+  before :each do
+    @file = 'lib/dir_monitor.rb'
+    @spec = 'spec/dir_monitor_spec.rb'
+    Dir.stub!(:glob).with('lib/**/*').and_return([@file])
+    @dm = DirMonitor.new 'lib'
+  end
+  
   it "should yield new files and their specs" do
-    file = 'lib/dir_monitor.rb'
-    spec = 'spec/dir_monitor_spec.rb'
-    Dir.should_receive(:glob).with('lib/**/*').and_return([file])
-    File.should_receive(:exists?).with(spec).and_return(true)
-    dm = DirMonitor.new 'lib'
+    File.should_receive(:exists?).with(@spec).and_return(true)
     results = []
-    dm.scan_new_with_spec do |new_file, new_spec|
+    @dm.scan_new_with_spec do |new_file, new_spec|
       results << {new_file => new_spec}
     end
-    results.should == [{file=>spec}]
+    results.should == [{@file=>@spec}]
   end
   
   it "should not yield files with non-existent specs" do
-    file = 'lib/dir_monitor.rb'
-    spec = 'spec/dir_monitor_spec.rb'
-    Dir.should_receive(:glob).with('lib/**/*').and_return([file])
-    File.should_receive(:exists?).with(spec).and_return(false)
-    dm = DirMonitor.new 'lib'
+    File.should_receive(:exists?).with(@spec).and_return(false)
     results = []
-    dm.scan_new_with_spec do |new_file, new_spec|
+    @dm.scan_new_with_spec do |new_file, new_spec|
       results << {new_file => new_spec}
     end
     results.should == []

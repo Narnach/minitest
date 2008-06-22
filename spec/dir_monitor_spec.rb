@@ -125,23 +125,24 @@ describe DirMonitor, "#scan_changed" do
 end
 
 describe DirMonitor, "#spec_for" do
+  before(:each) do
+    @dm = DirMonitor.new
+  end
+  
   it "should find the spec for a given file" do
     file = 'lib/dir_monitor.rb'
     spec = 'spec/dir_monitor_spec.rb'
-    dm = DirMonitor.new
-    dm.spec_for(file).should == spec
+    @dm.spec_for(file).should == spec
   end
   
   it "should find the spec for non-ruby files" do
     file = 'app/views/posts/post.html.haml'
     spec = 'spec/views/posts/post.html.haml_spec.rb'
-    dm = DirMonitor.new
-    dm.spec_for(file).should == spec
+    @dm.spec_for(file).should == spec
   end
   
   it "should map specs to themselves" do
     spec = 'spec/dir_monitor_spec.rb'
-    dm = DirMonitor.new
-    dm.spec_for(spec).should == spec
+    @dm.spec_for(spec).should == spec
   end
 end

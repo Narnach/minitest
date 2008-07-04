@@ -4,5 +4,8 @@ require 'minitest'
 
 minitest = Minitest.new
 minitest.recent = (ARGV.include? "recent")
-minitest.spec_opts = "--format profile --colour --diff unified" if ARGV.include? "profile"
+custom_spec_opts = ''
+custom_spec_opts << " --drb" if ARGV.include? "drb"
+custom_spec_opts << " --format profile --colour --diff unified" if ARGV.include? "profile"
+minitest.spec_opts = custom_spec_opts if custom_spec_opts.size > 0
 minitest.start

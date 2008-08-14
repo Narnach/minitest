@@ -3,8 +3,11 @@ Minitest is a simple autotester intended to be used with rSpec and rCov.
 It can be used with 'plain' ruby projects and Ruby on Rails.
 
 == Recent changes
-Version 0.3.0 switched to a new file monitoring backend, DirMonitor.
-The 'recent' feature was removed.
+=== Version 0.3.0
+Minitest switched to a new file monitoring backend: DirMonitor.
+This makes it possible to track new files as they are created, without needing to restart minitest.
+The 'recent' feature was removed because DirMonitor does not (yet?) have a way to only yield files
+newer than some timestamp. This feature is likely to re-appear in a nearby future.
 
 == Installation
 === From gem

@@ -111,6 +111,31 @@ class DirMonitor
     return File.join(spec_dir, spec_file)
   end
 
+  # Find the (theoretical) test file name for a given file.
+  # The assumptions are:
+  # - All tests reside in the 'test' directory.
+  # - All test file names have the suffix '_test.rb', instead of only the '.rb' extension.
+  # - The file name for a non-ruby file test simply has '_test.rb' suffixed to the entire file name.
+  # The returned file name does not necessarily have to exist.
+  def test_for(file)
+    base = File.basename(file)
+    extension = File.extname(base)
+    dir = File.dirname(file)
+    dir_array = dir.split('/')
+    if extension == '.rb' and dir_array.first=='test'
+      return file
+    end
+    if extension == '.rb'
+      base_without_extension = base[0, base.size - extension.size]
+      test_file = base_without_extension + '_test' + extension
+    else
+      test_file = base + '_test.rb'
+    end
+    dir_array[0]='test'
+    test_dir = dir_array.join('/')
+    return File.join(test_dir, test_file)
+  end
+
 private
 
   # Get the modification time for a file.

@@ -219,4 +219,27 @@ describe "#spec_for" do
   end
 end
 
+describe "#test_for" do
+  before(:each) do
+    @dm = DirMonitor.new
+  end
+
+  it "should find the test for a given file" do
+    file = 'lib/dir_monitor.rb'
+    test = 'test/dir_monitor_test.rb'
+    @dm.test_for(file).should == test
+  end
+
+  it "should find the test for non-ruby files" do
+    file = 'app/views/posts/post.html.haml'
+    test = 'test/views/posts/post.html.haml_test.rb'
+    @dm.test_for(file).should == test
+  end
+
+  it "should map tests to themselves" do
+    test = 'test/dir_monitor_test.rb'
+    @dm.test_for(test).should == test
+  end
+end
+
 end # describe DirMonitor

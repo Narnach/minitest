@@ -52,17 +52,26 @@ class Minitest
 
   def start
     @active = true
-    @dir_monitor = DirMonitor.new(source_dirs)
+    @spec_monitor = DirMonitor.new(source_dirs)
+    @test_monitor = DirMonitor.new(source_dirs)
     trap_int_for_rcov
     while active? do
       reset_need_testing
-      @dir_monitor.scan_new_or_changed_with_spec do |file, spec|
+      @spec_monitor.scan_new_or_changed_with_spec do |file, spec|
         known_specs << spec
         need_testing << spec
       end
       if need_testing.size > 0
         print "\nTesting files: #{need_testing.join(" ")}\n"
         system rspec(need_testing)
+      end
+      tests_to_run = Set.new
+      @test_monitor.scan_new_or_changed_with_test do |file, test|
+        tests_to_run << test
+      end
+      if tests_to_run.size > 0
+        print "\nTesting files: #{tests_to_run.join(" ")}\n"
+        system 'ruby %s' % tests_to_run.join(" ")
       end
       sleep 1
     end

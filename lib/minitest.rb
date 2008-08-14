@@ -71,7 +71,7 @@ class Minitest
       end
       if tests_to_run.size > 0
         print "\nTesting files: #{tests_to_run.join(" ")}\n"
-        system 'ruby %s' % tests_to_run.join(" ")
+        system 'ruby -e "" -rtest/unit %s' % tests_to_run.map{|test| '-r%s' % test}.join(" ")
       end
       sleep 1
     end

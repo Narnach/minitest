@@ -203,6 +203,7 @@ describe "#scan_new_or_changed_with_test" do
     @time = Time.now
     Dir.stub!(:glob).with('lib/**/*').and_return([@file])
     File.stub!(:mtime).with(@file).and_return(@time)
+    File.stub!(:exist?).with(@test).and_return(true)
     @dm = DirMonitor.new 'lib'
   end
 
@@ -228,6 +229,20 @@ describe "#scan_new_or_changed_with_test" do
   it "should not yield a file and test when a file is not new and has not changed" do
     @dm.scan
     @dm.scan_changed {|f|}
+    results = []
+    @dm.scan_new_or_changed_with_test do |file, test|
+      results << {file => test}
+    end
+    results.should == []
+  end
+
+  it "should skip files with non-existent tests" do
+    @dm.scan
+    @dm.scan_changed {|f|}
+
+    @test = @dm.test_for(@file)
+    File.should_receive(:mtime).with(@file).and_return(@time+1)
+    File.should_receive(:exist?).with(@test).and_return(false)
     results = []
     @dm.scan_new_or_changed_with_test do |file, test|
       results << {file => test}

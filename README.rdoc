@@ -3,6 +3,10 @@ Minitest is a simple autotester intended to be used with rSpec and rCov.
 It can be used with 'plain' ruby projects and Ruby on Rails.
 
 == Recent changes
+
+=== Version 0.3.1
+Minitest gained support to test Test::Unit tests and RSpec specs at the same time.
+
 === Version 0.3.0
 Minitest switched to a new file monitoring backend: DirMonitor.
 This makes it possible to track new files as they are created, without needing to restart minitest.

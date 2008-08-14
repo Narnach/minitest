@@ -42,27 +42,8 @@ class Minitest
     ignores.join(",")
   end
 
-  # Command line string to run rcov for all monitored specs.
-  def rcov
-    "#{rcov_cmd} -T --exclude \"#{rcov_ignores}\" -Ilib #{spec_cmd} -- " + known_specs.join(" ")
-  end
-
-  # Command line string to run rspec for an array of specs. Defaults to all specs.
-  def rspec(specs=known_specs)
-    "#{spec_cmd} #{specs.join(" ")} #{spec_opts}"
-  end
-
   def source_dirs
     @source_dirs || DEFAULT_SOURCE_DIRS
-  end
-
-  def rcov_cmd
-    @rcov_cmd ||= find_rcov_cmd
-  end
-
-  # The command to use to run specs.
-  def spec_cmd
-    @spec_cmd ||= ( File.exist?('script/spec') ? 'script/spec' : find_spec_cmd )
   end
 
   def spec_opts
@@ -87,15 +68,6 @@ class Minitest
     end
   end
 
-  def trap_int_for_rcov
-    Signal.trap("INT") do
-      print "\nNow we run rcov and we're done.\n\n"
-      puts rcov
-      system rcov
-      @active = false
-    end
-  end
-
   private
 
   def find_rcov_cmd
@@ -106,7 +78,35 @@ class Minitest
     `which spec`.strip
   end
 
+  # Command line string to run rcov for all monitored specs.
+  def rcov
+    "#{rcov_cmd} -T --exclude \"#{rcov_ignores}\" -Ilib #{spec_cmd} -- " + known_specs.join(" ")
+  end
+
+  def rcov_cmd
+    @rcov_cmd ||= find_rcov_cmd
+  end
+
   def reset_need_testing
     @need_testing = Set.new
+  end
+
+  # Command line string to run rspec for an array of specs. Defaults to all specs.
+  def rspec(specs=known_specs)
+    "#{spec_cmd} #{specs.join(" ")} #{spec_opts}"
+  end
+
+  # The command to use to run specs.
+  def spec_cmd
+    @spec_cmd ||= ( File.exist?('script/spec') ? 'script/spec' : find_spec_cmd )
+  end
+
+  def trap_int_for_rcov
+    Signal.trap("INT") do
+      print "\nNow we run rcov and we're done.\n\n"
+      puts rcov
+      system rcov
+      @active = false
+    end
   end
 end

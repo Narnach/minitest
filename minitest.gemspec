@@ -3,13 +3,13 @@ Gem::Specification.new do |s|
   s.name         = 'minitest'
   s.summary      = "Minitest is a simple autotester tool."
   s.description  = "Minitest is a simple autotester tool, which uses rSpec and rCov to test ruby and rails projects."
-  s.version      = '0.2.2'
-  s.date         = '2008-06-21'
+  s.version      = '0.3.0'
+  s.date         = '2008-08-14'
   s.platform     = Gem::Platform::RUBY
   s.authors      = ["Wes Oldenbeuving"]
   s.email        = "narnach@gmail.com"
   s.homepage     = "http://www.github.com/Narnach/minitest"
-  
+
   # Files
   s.bindir       = "bin"
   s.executables  = %w[minitest]

@@ -35,7 +35,7 @@ When you start working on a codebase, it makes sense to run all specs:
 When you want to see which specs are slow and could use optimizing:
   minitest profile
 You can also combine options:
-  minitest recent profile
+  minitest drb profile
 
 == About
 Author:: Wes 'Narnach' Oldenbeuving (narnach@gmail.com)

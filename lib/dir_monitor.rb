@@ -146,6 +146,12 @@ class DirMonitor
       test_file = base + '_test.rb'
     end
     dir_array[0]='test'
+    case dir_array[1]
+    when 'controllers'
+      dir_array[1] = 'functional'
+    when 'models'
+      dir_array[1] = 'unit'
+    end
     test_dir = dir_array.join('/')
     return File.join(test_dir, test_file)
   end

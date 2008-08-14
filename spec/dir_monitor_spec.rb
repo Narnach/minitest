@@ -280,6 +280,18 @@ describe "#test_for" do
     test = 'test/dir_monitor_test.rb'
     @dm.test_for(test).should == test
   end
+
+  it "should recognize Rails controllers" do
+    file = 'app/controllers/posts_controller.rb'
+    test = 'test/functional/posts_controller_test.rb'
+    @dm.test_for(file).should == test
+  end
+
+  it "should recognize Rails models" do
+    file = 'app/models/post.rb'
+    test = 'test/unit/post_test.rb'
+    @dm.test_for(file).should == test
+  end
 end
 
 end # describe DirMonitor

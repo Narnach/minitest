@@ -5,7 +5,7 @@
 # - Link these files to their specs, so Minitest can run the specs.
 class DirMonitor
   attr_reader :known_files, :dirs, :last_mtime
-  
+
   # Setup a new DirMonitor.
   # Directories can be provided in a number of ways:
   #   DirMonitor.new 'lib', 'app'
@@ -17,7 +17,7 @@ class DirMonitor
     @known_files = []
     @last_mtime = {}
   end
-  
+
   # Scan for all files in the directories and their sub-directories.
   # The results are stored as a single array in @known_files.
   def scan
@@ -28,7 +28,7 @@ class DirMonitor
     end
     @known_files = results
   end
-  
+
   # Scan for changes in the known files.
   # Yields the name of the changed files.
   # Stores the mtime for all changed files.
@@ -41,7 +41,7 @@ class DirMonitor
       end
     end
   end
-  
+
   # Scans for changed known files, using #scan_changed. Yields the name of both the file and its associated spec.
   # spec_for is used to determine what the name of the file's spec _should_ be.
   # Does not yield a file/spec name when the spec does not exist.
@@ -51,7 +51,7 @@ class DirMonitor
       block.call(file, spec) if File.exists?(spec)
     end
   end
-  
+
   # Scan for new files.
   # All new file names are yielded.
   def scan_new(&block) # :yields: file
@@ -62,7 +62,7 @@ class DirMonitor
       block.call(new_file)
     end
   end
-  
+
   # Scan for new files and check for changed known files.
   # Only yields a file once per call.
   def scan_new_or_changed_with_spec(&block) # :yields: file, spec
@@ -73,9 +73,9 @@ class DirMonitor
       yielded_files[file]=nil
     end
     scan_new_with_spec(&yield_once_block)
-    scan_changed_with_spec(&yield_once_block) 
+    scan_changed_with_spec(&yield_once_block)
   end
-  
+
   # Scans for new files, like scan_new does, but yields the name of both the file and spec.
   # spec_for is used to determine what the name of the file's spec _should_ be.
   # Does not yield a file/spec name when the spec does not exist.
@@ -85,7 +85,7 @@ class DirMonitor
       block.call(file, spec) if File.exists?(spec)
     end
   end
-  
+
   # Find the (theoretical) spec file name for a given file.
   # The assumptions are:
   # - All specs reside in the 'spec' directory.

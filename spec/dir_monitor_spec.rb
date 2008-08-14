@@ -11,7 +11,7 @@ describe DirMonitor, ".new" do
     dm = DirMonitor.new(%w[lib app])
     dm.dirs.should == ['lib','app']
   end
-  
+
   it "should have no known files" do
     dm = DirMonitor.new('lib')
     dm.known_files.should == []
@@ -36,7 +36,7 @@ describe DirMonitor, "#scan_new" do
     Dir.stub!(:glob).with('lib/**/*').and_return(@known_files)
     @dm = DirMonitor.new 'lib'
   end
-  
+
   it "should yield the names of all new files" do
     yield_results = []
     @dm.scan_new do |file|
@@ -44,7 +44,7 @@ describe DirMonitor, "#scan_new" do
     end
     yield_results.should == @known_files
   end
-  
+
   it "should not yield known file names" do
     known_files2 = %w[lib/minitest.rb lib/dir_monitor2.rb]
     Dir.stub!(:glob).with('lib/**/*').and_return(@known_files, known_files2)
@@ -64,7 +64,7 @@ describe DirMonitor, "#scan_new_with_spec" do
     Dir.stub!(:glob).with('lib/**/*').and_return([@file])
     @dm = DirMonitor.new 'lib'
   end
-  
+
   it "should yield new files and their specs" do
     File.should_receive(:exists?).with(@spec).and_return(true)
     results = []
@@ -73,7 +73,7 @@ describe DirMonitor, "#scan_new_with_spec" do
     end
     results.should == [{@file=>@spec}]
   end
-  
+
   it "should not yield files with non-existent specs" do
     File.should_receive(:exists?).with(@spec).and_return(false)
     results = []
@@ -93,7 +93,7 @@ describe DirMonitor, "#scan_changed" do
     @dm = DirMonitor.new 'lib'
     @dm.scan
   end
-  
+
   it "should yield the names of changed known files" do
     changes = []
     @dm.scan_changed do |changed_file|
@@ -101,7 +101,7 @@ describe DirMonitor, "#scan_changed" do
     end
     changes.should == [@file]
   end
-  
+
   it "should not yield the names of files which did not change since last scan" do
     @dm.scan_changed { |f| }
     changes = []
@@ -134,7 +134,7 @@ describe DirMonitor, "scan_changed_with_spec" do
     @dm = DirMonitor.new 'lib'
     @dm.scan
   end
-  
+
   it "should yield the file name and spec name of changed files with an existing spec" do
     File.should_receive(:exists?).with(@spec).and_return(true)
     changes = []
@@ -163,7 +163,7 @@ describe DirMonitor, "scan_new_or_changed_with_spec" do
     File.stub!(:mtime).with(@file).and_return(@time)
     @dm = DirMonitor.new 'lib'
   end
-  
+
   it "should yield a file and spec when a file is new" do
     results = []
     @dm.scan_new_or_changed_with_spec do |file, spec|
@@ -171,7 +171,7 @@ describe DirMonitor, "scan_new_or_changed_with_spec" do
     end
     results.should == [{@file=>@spec}]
   end
-  
+
   it "should yield a file and spec when a file is not new but has changed" do
     @dm.scan
     @dm.scan_changed {|f|}
@@ -182,7 +182,7 @@ describe DirMonitor, "scan_new_or_changed_with_spec" do
     end
     results.should == [{@file=>@spec}]
   end
-  
+
   it "should not yield a file and spec when a file is not new and has not changed" do
     @dm.scan
     @dm.scan_changed {|f|}
@@ -198,19 +198,19 @@ describe DirMonitor, "#spec_for" do
   before(:each) do
     @dm = DirMonitor.new
   end
-  
+
   it "should find the spec for a given file" do
     file = 'lib/dir_monitor.rb'
     spec = 'spec/dir_monitor_spec.rb'
     @dm.spec_for(file).should == spec
   end
-  
+
   it "should find the spec for non-ruby files" do
     file = 'app/views/posts/post.html.haml'
     spec = 'spec/views/posts/post.html.haml_spec.rb'
     @dm.spec_for(file).should == spec
   end
-  
+
   it "should map specs to themselves" do
     spec = 'spec/dir_monitor_spec.rb'
     @dm.spec_for(spec).should == spec

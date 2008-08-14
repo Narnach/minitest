@@ -2,6 +2,10 @@
 Minitest is a simple autotester intended to be used with rSpec and rCov.
 It can be used with 'plain' ruby projects and Ruby on Rails.
 
+== Recent changes
+Version 0.3.0 switched to a new file monitoring backend, DirMonitor.
+The 'recent' feature was removed.
+
 == Installation
 === From gem
 Use gem to install minitest. The gem is located on github.
@@ -15,14 +19,12 @@ This will build the gem and install it for you.
 
 == Usage
 Minitest has the following command line options:
-recent::   Only specs for files modified within the last hour are executed on the first run. All files are still monitored for changes, though.
 profile::  Force rspec output format to 'profile', combined with coloured output and unified diffs.
+drb:: Use a spec server to execute specs, speeding up their execution.
 
 == Examples
 When you start working on a codebase, it makes sense to run all specs:
   minitest
-When you resume work on a codebase you recently worked on, it might be useful skip running the specs for unchanged files on the first run:
-  minitest recent
 When you want to see which specs are slow and could use optimizing:
   minitest profile
 You can also combine options:

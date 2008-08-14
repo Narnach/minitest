@@ -3,7 +3,6 @@ $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__),'..','lib')
 require 'minitest'
 
 minitest = Minitest.new
-minitest.recent = (ARGV.include? "recent")
 custom_spec_opts = ''
 custom_spec_opts << " --drb" if ARGV.include? "drb"
 custom_spec_opts << " --format profile --colour --diff unified" if ARGV.include? "profile"

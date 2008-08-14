@@ -1,7 +1,9 @@
 $LOAD_PATH.unshift File.expand_path(File.join(File.dirname(__FILE__),'..','lib'))
 require 'dir_monitor'
 
-describe DirMonitor, ".new" do
+describe DirMonitor do
+
+describe ".new" do
   it "should accept multiple directories" do
     dm = DirMonitor.new('lib','app')
     dm.dirs.should == ['lib','app']
@@ -18,7 +20,7 @@ describe DirMonitor, ".new" do
   end
 end
 
-describe DirMonitor, "#scan" do
+describe "#scan" do
   it "should find all files in the directories" do
     known_files1 = %w[lib/minitest.rb lib/dir_monitor.rb]
     known_files2 = %w[app/another.rb app/files.rb app/more/things.txt]
@@ -30,7 +32,7 @@ describe DirMonitor, "#scan" do
   end
 end
 
-describe DirMonitor, "#scan_new" do
+describe "#scan_new" do
   before(:each) do
     @known_files = %w[lib/minitest.rb lib/dir_monitor.rb]
     Dir.stub!(:glob).with('lib/**/*').and_return(@known_files)
@@ -57,7 +59,7 @@ describe DirMonitor, "#scan_new" do
   end
 end
 
-describe DirMonitor, "#scan_new_with_spec" do
+describe "#scan_new_with_spec" do
   before :each do
     @file = 'lib/dir_monitor.rb'
     @spec = 'spec/dir_monitor_spec.rb'
@@ -84,7 +86,7 @@ describe DirMonitor, "#scan_new_with_spec" do
   end
 end
 
-describe DirMonitor, "#scan_changed" do
+describe "#scan_changed" do
   before(:each) do
     @file = 'lib/dir_monitor.rb'
     @time = Time.now
@@ -124,7 +126,7 @@ describe DirMonitor, "#scan_changed" do
   end
 end
 
-describe DirMonitor, "scan_changed_with_spec" do
+describe "#scan_changed_with_spec" do
   before(:each) do
     @file = 'lib/dir_monitor.rb'
     @spec = 'spec/dir_monitor_spec.rb'
@@ -154,7 +156,7 @@ describe DirMonitor, "scan_changed_with_spec" do
   end
 end
 
-describe DirMonitor, "scan_new_or_changed_with_spec" do
+describe "#scan_new_or_changed_with_spec" do
   before(:each) do
     @file = 'lib/dir_monitor.rb'
     @spec = 'spec/dir_monitor_spec.rb'
@@ -194,7 +196,7 @@ describe DirMonitor, "scan_new_or_changed_with_spec" do
   end
 end
 
-describe DirMonitor, "#spec_for" do
+describe "#spec_for" do
   before(:each) do
     @dm = DirMonitor.new
   end
@@ -216,3 +218,5 @@ describe DirMonitor, "#spec_for" do
     @dm.spec_for(spec).should == spec
   end
 end
+
+end # describe DirMonitor

@@ -2,7 +2,6 @@ require "rake"
 require "rake/clean"
 require "rake/gempackagetask"
 require 'rubygems'
-require 'lib/minitest'
 
 ################################################################################
 ### Gem

@@ -67,13 +67,14 @@ class DirMonitor
   # Only yields a file once per call.
   def scan_new_or_changed_with_spec(&block) # :yields: file, spec
     yielded_files = {}
-    yield_once_block = Proc.new do |file, spec|
-      next if yielded_files.has_key? file
-      block.call(file, spec)
-      yielded_files[file]=nil
+    yield_once_block = Proc.new do |file|
+      spec_file = spec_for(file)
+      next if yielded_files.has_key? spec_file
+      block.call(file, spec_file)
+      yielded_files[spec_file]=file
     end
-    scan_new_with_spec(&yield_once_block)
-    scan_changed_with_spec(&yield_once_block)
+    scan_new(&yield_once_block)
+    scan_changed(&yield_once_block)
   end
 
   # Scan for new files and check for changed known files.

@@ -59,33 +59,6 @@ describe "#scan_new" do
   end
 end
 
-describe "#scan_new_with_spec" do
-  before :each do
-    @file = 'lib/dir_monitor.rb'
-    @spec = 'spec/dir_monitor_spec.rb'
-    Dir.stub!(:glob).with('lib/**/*').and_return([@file])
-    @dm = DirMonitor.new 'lib'
-  end
-
-  it "should yield new files and their specs" do
-    File.should_receive(:exists?).with(@spec).and_return(true)
-    results = []
-    @dm.scan_new_with_spec do |new_file, new_spec|
-      results << {new_file => new_spec}
-    end
-    results.should == [{@file=>@spec}]
-  end
-
-  it "should not yield files with non-existent specs" do
-    File.should_receive(:exists?).with(@spec).and_return(false)
-    results = []
-    @dm.scan_new_with_spec do |new_file, new_spec|
-      results << {new_file => new_spec}
-    end
-    results.should == []
-  end
-end
-
 describe "#scan_changed" do
   before(:each) do
     @file = 'lib/dir_monitor.rb'
@@ -123,36 +96,6 @@ describe "#scan_changed" do
       end
       changes.should == [@file]
     end
-  end
-end
-
-describe "#scan_changed_with_spec" do
-  before(:each) do
-    @file = 'lib/dir_monitor.rb'
-    @spec = 'spec/dir_monitor_spec.rb'
-    @time = Time.now
-    Dir.stub!(:glob).with('lib/**/*').and_return([@file])
-    File.stub!(:mtime).with(@file).and_return(@time)
-    @dm = DirMonitor.new 'lib'
-    @dm.scan
-  end
-
-  it "should yield the file name and spec name of changed files with an existing spec" do
-    File.should_receive(:exists?).with(@spec).and_return(true)
-    changes = []
-    @dm.scan_changed_with_spec do |changed_file, spec_file|
-      changes << { changed_file => spec_file }
-    end
-    changes.should == [{@file=>@spec}]
-  end
-
-  it "should not yield the file name and spec name of changed files without an existing spec" do
-    File.should_receive(:exists?).with(@spec).and_return(false)
-    changes = []
-    @dm.scan_changed_with_spec do |changed_file, spec_file|
-      changes << { changed_file => spec_file }
-    end
-    changes.should == []
   end
 end
 

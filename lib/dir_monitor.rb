@@ -64,6 +64,7 @@ class DirMonitor
     yield_once_block = Proc.new do |file|
       spec_file = spec_for(file)
       next if yielded_files.has_key? spec_file
+      next unless File.exist?(spec_file)
       block.call(file, spec_file)
       yielded_files[spec_file]=file
     end

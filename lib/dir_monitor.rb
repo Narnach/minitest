@@ -1,13 +1,17 @@
 # Dirmonitor's purpose is to serve as a file monitoring helper for Minitest.
+#
 # Its intended functionality is:
 # - Keep track of new files in monitored directories.
 # - Keep track of changed files in monitored directories.
-# - Link these files to their specs, so Minitest can run the specs.
+# - Link these files to their specs or tests, so Minitest can run them.
 class DirMonitor
   attr_reader :known_files, :dirs, :last_mtime
 
   # Setup a new DirMonitor.
-  # Directories can be provided in a number of ways:
+  #
+  # The input parameter(s) are flattened and forced to a string.
+  #
+  # This means that directories can be provided in a number of ways:
   #   DirMonitor.new 'lib', 'app'
   #   DirMonitor.new :lib, :app
   #   DirMonitor.new %w[lib app]
@@ -54,7 +58,7 @@ class DirMonitor
   end
 
   # Scan for new files and check for changed known files.
-  # Only yields a file once per call.
+  # The same file is not yielded twice.
   def scan_new_or_changed_with_spec(&block) # :yields: file, spec
     yielded_files = {}
     yield_once_block = Proc.new do |file|
@@ -68,7 +72,7 @@ class DirMonitor
   end
 
   # Scan for new files and check for changed known files.
-  # Only yields a file once per call.
+  # The same file is not yielded twice.
   def scan_new_or_changed_with_test(&block) # :yields: file, test
     yielded_files = {}
     yield_once_block = Proc.new do |file|
@@ -85,7 +89,8 @@ class DirMonitor
   # Find the (theoretical) spec file name for a given file.
   # The assumptions are:
   # - All specs reside in the 'spec' directory.
-  # - All specs file names have the suffix '_spec.rb', instead of only the '.rb' extension.
+  # - The directory structure is the same; lib/a/b/c maps to spec/a/b/c.
+  # - All specs file names have the suffix '_spec.rb'; Ruby code has the '.rb' extension.
   # - The file name for a non-ruby file spec simply has '_spec.rb' suffixed to the entire file name.
   # The returned file name does not necessarily have to exist.
   def spec_for(file)
@@ -110,7 +115,11 @@ class DirMonitor
   # Find the (theoretical) test file name for a given file.
   # The assumptions are:
   # - All tests reside in the 'test' directory.
-  # - All test file names have the suffix '_test.rb', instead of only the '.rb' extension.
+  # - The directory structure is the same; lib/a/b/c maps to test/a/b/c.
+  # - Rails is the exception to this rule: 
+  #   - Controllers are tested in test/functional
+  #   - Models are tested in test/unit
+  # - All test file names have the suffix '_test.rb'. Ruby code has the '.rb' extension.
   # - The file name for a non-ruby file test simply has '_test.rb' suffixed to the entire file name.
   # The returned file name does not necessarily have to exist.
   def test_for(file)

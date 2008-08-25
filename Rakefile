@@ -9,7 +9,8 @@ require 'rubygems'
 
 begin
   # Parse gemspec using the github safety level.
-  data = File.read('minitest.gemspec')
+  file = Dir['*.gemspec'].first
+  data = File.read(file)
   spec = nil
   Thread.new { spec = eval("$SAFE = 3\n%s" % data)}.join
 
@@ -18,10 +19,10 @@ begin
     package.gem_spec = spec
   end
 rescue Exception => e
-  printf "WARNING: Error caught (%s): %s\n", e.class.name, e.message
+  printf "WARNING: Error caught (%s): %s\n%s", e.class.name, e.message, e.backtrace[0...5].map {|l| '  %s' % l}.join("\n")
 end
 
 desc 'Package and install the gem for the current version'
 task :install => :gem do
-  system "sudo gem install -l pkg/minitest-%s.gem" % spec.version
+  system "sudo gem install -l pkg/%s-%s.gem" % [spec.name, spec.version]
 end

@@ -1,6 +1,6 @@
 == Minitest
-Minitest is a simple autotester intended to be used with rSpec and rCov.
-It can be used with 'plain' ruby projects and Ruby on Rails.
+Minitest is a simple autotester intended to be used with rSpec, Test::Unit and rCov.
+It can be used with 'plain' Ruby projects and Ruby on Rails.
 
 == Recent changes
 

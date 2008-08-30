@@ -7,8 +7,7 @@ require 'dir_monitor'
 #   minitest.start
 # This will do the following:
 # - Initialize a DirMonitor
-# - Map all files in source dirs to specs
-# - Frequently check for new or changed files; run rspec on their associated specs
+# - Frequently check for new or changed files; run rspec or test/unit on their associated specs or tests
 # - Run rcov (code coverage tester) on all specs when exiting (Press ctrl-C on send SIGINT to the process)
 class Minitest
   attr_accessor :source_dirs

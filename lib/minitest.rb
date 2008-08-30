@@ -1,11 +1,5 @@
-require 'set'
+require 'set_ext'
 require 'dir_monitor'
-
-class Set
-  def join(*args,&block)
-    map.join(*args,&block)
-  end
-end
 
 # = Minitest
 # The default usage of Minitest is this:

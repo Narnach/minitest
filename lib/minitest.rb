@@ -49,7 +49,7 @@ class Minitest
   # * Compile list of new or changed files with tests
   # * Execute test/unit on the test files
   def check
-    @need_testing = Set.new
+    need_testing.clear
     @spec_monitor.scan_new_or_changed_with_spec do |file, spec|
       known_specs << spec
       need_testing << spec

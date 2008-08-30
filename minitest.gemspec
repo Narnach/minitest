@@ -11,14 +11,14 @@ Gem::Specification.new do |s|
   s.homepage     = "http://www.github.com/Narnach/minitest"
 
   # Files
-  s.bindir       = "bin"
-  s.executables  = %w[minitest]
-  s.require_path = "lib"
   root_files     = %w[MIT-LICENSE README.rdoc Rakefile minitest.gemspec]
   bin_files      = %w[minitest]
   lib_files      = %w[minitest dir_monitor]
   test_files     = %w[]
   spec_files     = %w[dir_monitor minitest]
+  s.bindir       = "bin"
+  s.require_path = "lib"
+  s.executables  = bin_files
   s.test_files   = test_files.map {|f| 'test/%s_test.rb' % f} + spec_files.map {|f| 'spec/%s_spec.rb' % f}
   s.files        = root_files + s.test_files + bin_files.map {|f| 'bin/%s' % f} + lib_files.map {|f| 'lib/%s.rb' % f}
 

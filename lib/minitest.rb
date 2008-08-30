@@ -45,12 +45,9 @@ class Minitest
     @spec_opts ||= ( File.exist?('spec/spec.opts') ? '-O spec/spec.opts' : '' )
   end
 
-  # Top-level overview:
-  # * Compile list of new or changed files with specs
-  # * Execute rspec on their specs
-  # * Compile list of new or changed files with tests
-  # * Execute test/unit on the test files
-  def check
+  # Compile list of new or changed files with specs.
+  # Execute rspec on their specs.
+  def check_specs
     specs_to_run.clear
     @spec_monitor.scan_new_or_changed_with_spec do |file, spec|
       known_specs << spec
@@ -60,6 +57,11 @@ class Minitest
       print "\nTesting files: #{specs_to_run.join(" ")}\n"
       system rspec(specs_to_run)
     end
+  end
+
+  # Compile list of new or changed files with tests.
+  # Execute test/unit on the test files.
+  def check_tests
     tests_to_run.clear
     @test_monitor.scan_new_or_changed_with_test do |file, test|
       tests_to_run << test
@@ -71,7 +73,7 @@ class Minitest
   end
 
   # Start an infinite loop which does the following:
-  # * Check for files to test and test them
+  # * Check for files to test and test them, both for specs and tests
   # * Sleep for a second
   # Prior to starting the loop, the INT signal is trapped,
   # so interrupting the process will not directly kill it.
@@ -82,7 +84,8 @@ class Minitest
     @test_monitor = DirMonitor.new(source_dirs)
     trap_int_for_rcov
     while active? do
-      check
+      check_specs
+      check_tests
       sleep 1
     end
   end

@@ -37,6 +37,11 @@ When you want to see which specs are slow and could use optimizing:
 You can also combine options:
   minitest drb profile
 
+== Todo / ideas / plans
+* Figure out how to get RCov to run specs and tests at the same time and implement it.
+* Add 'recent' option (was removed in 0.3.0).
+* Write tests for Minitest class.
+
 == About
 Author:: Wes 'Narnach' Oldenbeuving (narnach@gmail.com)
 Website:: http://www.github.com/Narnach/minitest

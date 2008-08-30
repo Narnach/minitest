@@ -43,6 +43,11 @@ class Minitest
     @spec_opts ||= ( File.exist?('spec/spec.opts') ? '-O spec/spec.opts' : '' )
   end
 
+  # Top-level overview:
+  # * Compile list of new or changed files with specs
+  # * Execute rspec on their specs
+  # * Compile list of new or changed files with tests
+  # * Execute test/unit on the test files
   def check
     @need_testing = Set.new
     @spec_monitor.scan_new_or_changed_with_spec do |file, spec|
@@ -63,6 +68,12 @@ class Minitest
     end
   end
 
+  # Start an infinite loop which does the following:
+  # * Check for files to test and test them
+  # * Sleep for a second
+  # Prior to starting the loop, the INT signal is trapped,
+  # so interrupting the process will not directly kill it.
+  # Instead, RCov is ran on all known specs.
   def start
     @active = true
     @spec_monitor = DirMonitor.new(source_dirs)

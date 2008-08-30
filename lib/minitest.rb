@@ -14,6 +14,7 @@ class Minitest
   attr_accessor :rcov_ignores
   attr_accessor :spec_cmd, :spec_opts
   attr_reader   :specs_to_run, :known_specs
+  attr_reader   :tests_to_run
 
   DEFAULT_RCOV_IGNORES = %w[spec/ db/ plugins/ vendor/ config/]
   DEFAULT_SOURCE_DIRS = %w[lib app spec test]
@@ -22,6 +23,7 @@ class Minitest
     @active = false
     @known_specs = Set.new
     @specs_to_run = Set.new
+    @tests_to_run = Set.new
   end
 
   def active?
@@ -58,7 +60,7 @@ class Minitest
       print "\nTesting files: #{specs_to_run.join(" ")}\n"
       system rspec(specs_to_run)
     end
-    tests_to_run = Set.new
+    tests_to_run.clear
     @test_monitor.scan_new_or_changed_with_test do |file, test|
       tests_to_run << test
     end

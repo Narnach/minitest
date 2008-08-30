@@ -43,29 +43,33 @@ class Minitest
     @spec_opts ||= ( File.exist?('spec/spec.opts') ? '-O spec/spec.opts' : '' )
   end
 
+  def check
+    @need_testing = Set.new
+    @spec_monitor.scan_new_or_changed_with_spec do |file, spec|
+      known_specs << spec
+      need_testing << spec
+    end
+    if need_testing.size > 0
+      print "\nTesting files: #{need_testing.join(" ")}\n"
+      system rspec(need_testing)
+    end
+    tests_to_run = Set.new
+    @test_monitor.scan_new_or_changed_with_test do |file, test|
+      tests_to_run << test
+    end
+    if tests_to_run.size > 0
+      print "\nTesting files: #{tests_to_run.join(" ")}\n"
+      system 'ruby -e "" -rtest/unit %s' % tests_to_run.map{|test| '-r%s' % test}.join(" ")
+    end
+  end
+
   def start
     @active = true
     @spec_monitor = DirMonitor.new(source_dirs)
     @test_monitor = DirMonitor.new(source_dirs)
     trap_int_for_rcov
     while active? do
-      reset_need_testing
-      @spec_monitor.scan_new_or_changed_with_spec do |file, spec|
-        known_specs << spec
-        need_testing << spec
-      end
-      if need_testing.size > 0
-        print "\nTesting files: #{need_testing.join(" ")}\n"
-        system rspec(need_testing)
-      end
-      tests_to_run = Set.new
-      @test_monitor.scan_new_or_changed_with_test do |file, test|
-        tests_to_run << test
-      end
-      if tests_to_run.size > 0
-        print "\nTesting files: #{tests_to_run.join(" ")}\n"
-        system 'ruby -e "" -rtest/unit %s' % tests_to_run.map{|test| '-r%s' % test}.join(" ")
-      end
+      check
       sleep 1
     end
   end
@@ -87,10 +91,6 @@ class Minitest
 
   def rcov_cmd
     @rcov_cmd ||= find_rcov_cmd
-  end
-
-  def reset_need_testing
-    @need_testing = Set.new
   end
 
   # Command line string to run rspec for an array of specs. Defaults to all specs.

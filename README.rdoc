@@ -42,6 +42,20 @@ You can also combine options:
 * Add 'recent' option (was removed in 0.3.0).
 * Cleanup Minitest class / rewrite in a clean and testable way.
 
+== Minitest cleanup
+
+The Minitest class started as a simple script and thus was not designed to focus on one responsibility.
+Right now it tries to do too much:
+* Infinite loop
+* Execute RSpec for changed files
+* Execute test/unit for changed files
+* Execute RCov when terminating the loop
+Instead of delegating these tasks, it actually performs them.
+
+Adding three classes is a good first step to reduce complexity.
+Each 'executable' gets its own class: RSpec, RCov and test/unit.
+When that is done, the code in Minitest should be reduced to looping and delegating.
+
 == About
 Author:: Wes 'Narnach' Oldenbeuving (narnach@gmail.com)
 Website:: http://www.github.com/Narnach/minitest

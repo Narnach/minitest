@@ -40,7 +40,7 @@ You can also combine options:
 == Todo / ideas / plans
 * Figure out how to get RCov to run specs and tests at the same time and implement it.
 * Add 'recent' option (was removed in 0.3.0).
-* Write tests for Minitest class.
+* Cleanup Minitest class / rewrite in a clean and testable way.
 
 == About
 Author:: Wes 'Narnach' Oldenbeuving (narnach@gmail.com)

@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   # Files
   root_files     = %w[MIT-LICENSE README.rdoc Rakefile minitest.gemspec]
   bin_files      = %w[minitest]
-  lib_files      = %w[minitest dir_monitor set_ext]
+  lib_files      = %w[minitest dir_monitor set_ext mixins/rcov_mixin]
   test_files     = %w[]
   spec_files     = %w[minitest dir_monitor set_ext]
   other_files    = %w[spec/spec.opts spec/spec_helper.rb]

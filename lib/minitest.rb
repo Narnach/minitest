@@ -1,5 +1,6 @@
 require 'set_ext'
 require 'dir_monitor'
+require 'mixins/rcov_mixin'
 
 # = Minitest
 # The default usage of Minitest is this:
@@ -10,13 +11,13 @@ require 'dir_monitor'
 # - Frequently check for new or changed files; run rspec or test/unit on their associated specs or tests
 # - Run rcov (code coverage tester) on all specs when exiting (Press ctrl-C on send SIGINT to the process)
 class Minitest
+  include RcovMixin
+
   attr_accessor :source_dirs
-  attr_accessor :rcov_ignores
   attr_accessor :spec_cmd, :spec_opts
   attr_reader   :specs_to_run, :known_specs
   attr_reader   :tests_to_run
 
-  DEFAULT_RCOV_IGNORES = %w[spec/ db/ plugins/ vendor/ config/]
   DEFAULT_SOURCE_DIRS = %w[lib app spec test]
 
   def initialize
@@ -30,13 +31,6 @@ class Minitest
     @active == true
   end
 
-  # Partial filepaths to exclude from rcov output
-  def rcov_ignores
-    ignores = (@rcov_ignores || DEFAULT_RCOV_IGNORES).dup
-    ignores << spec_cmd
-    ignores.join(",")
-  end
-
   def source_dirs
     @source_dirs || DEFAULT_SOURCE_DIRS
   end
@@ -44,7 +38,7 @@ class Minitest
   def spec_opts
     @spec_opts ||= ( File.exist?('spec/spec.opts') ? '-O spec/spec.opts' : '' )
   end
-  
+
   def specs_to_ignore
     @specs_to_ignore ||= Set.new(%w[spec/spec_helper.rb])
   end
@@ -97,21 +91,8 @@ class Minitest
 
   private
 
-  def find_rcov_cmd
-    `which rcov`.strip
-  end
-
   def find_spec_cmd
     `which spec`.strip
-  end
-
-  # Command line string to run rcov for all monitored specs.
-  def rcov
-    "#{rcov_cmd} -T --exclude \"#{rcov_ignores}\" -Ilib #{spec_cmd} -- " + known_specs.select{|s| File.exist?(s)}.join(" ")
-  end
-
-  def rcov_cmd
-    @rcov_cmd ||= find_rcov_cmd
   end
 
   # Command line string to run rspec for an array of specs. Defaults to all specs.
@@ -122,14 +103,5 @@ class Minitest
   # The command to use to run specs.
   def spec_cmd
     @spec_cmd ||= ( File.exist?('script/spec') ? 'script/spec' : find_spec_cmd )
-  end
-
-  def trap_int_for_rcov
-    Signal.trap("INT") do
-      print "\nNow we run rcov and we're done.\n\n"
-      puts rcov
-      system rcov
-      @active = false
-    end
   end
 end

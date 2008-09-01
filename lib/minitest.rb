@@ -107,7 +107,7 @@ class Minitest
 
   # Command line string to run rcov for all monitored specs.
   def rcov
-    "#{rcov_cmd} -T --exclude \"#{rcov_ignores}\" -Ilib #{spec_cmd} -- " + known_specs.join(" ")
+    "#{rcov_cmd} -T --exclude \"#{rcov_ignores}\" -Ilib #{spec_cmd} -- " + known_specs.select{|s| File.exist?(s)}.join(" ")
   end
 
   def rcov_cmd

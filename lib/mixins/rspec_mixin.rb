@@ -10,15 +10,15 @@ module RspecMixin
     @specs_to_ignore ||= Set.new(DEFAULT_SPECS_TO_IGNORE)
   end
 
+  # Command line string to run rspec for an array of specs. Defaults to all specs.
+  def rspec(specs)
+    "#{spec_cmd} #{specs.join(" ")} #{spec_opts}"
+  end
+
   private
 
   def find_spec_cmd
     `which spec`.strip
-  end
-
-  # Command line string to run rspec for an array of specs. Defaults to all specs.
-  def rspec(specs=known_specs)
-    "#{spec_cmd} #{specs.join(" ")} #{spec_opts}"
   end
 
   # The command to use to run specs.

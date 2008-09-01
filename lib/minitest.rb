@@ -81,4 +81,14 @@ class Minitest
       sleep 1
     end
   end
+
+  def trap_int_for_rcov
+    Signal.trap("INT") do
+      print "\nNow we run rcov and we're done.\n\n"
+      specs = known_specs.select{|s| File.exist?(s)}
+      puts rcov(specs)
+      system rcov(specs)
+      @active = false
+    end
+  end
 end

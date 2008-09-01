@@ -44,12 +44,17 @@ class Minitest
   def spec_opts
     @spec_opts ||= ( File.exist?('spec/spec.opts') ? '-O spec/spec.opts' : '' )
   end
+  
+  def specs_to_ignore
+    @specs_to_ignore ||= Set.new(%w[spec/spec_helper.rb])
+  end
 
   # Compile list of new or changed files with specs.
   # Execute rspec on their specs.
   def check_specs
     specs_to_run.clear
     @spec_monitor.scan_new_or_changed_with_spec do |file, spec|
+      next if specs_to_ignore.include?(spec)
       known_specs << spec
       specs_to_run << spec
     end

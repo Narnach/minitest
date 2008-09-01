@@ -1,12 +1,13 @@
 module RspecMixin
   attr_accessor :spec_cmd, :spec_opts
+  DEFAULT_SPECS_TO_IGNORE = %w[spec/spec_helper.rb]
 
   def spec_opts
     @spec_opts ||= ( File.exist?('spec/spec.opts') ? '-O spec/spec.opts' : '' )
   end
 
   def specs_to_ignore
-    @specs_to_ignore ||= Set.new(%w[spec/spec_helper.rb])
+    @specs_to_ignore ||= Set.new(DEFAULT_SPECS_TO_IGNORE)
   end
 
   private

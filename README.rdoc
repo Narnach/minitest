@@ -4,6 +4,20 @@ It can be used with 'plain' Ruby projects and Ruby on Rails.
 
 == Recent changes
 
+=== Version 0.3.2
+* Bugfixes:
+  * Minitest will not run non-existent specs
+  * Rcov will not run non-existent specs
+* Documentation changes:
+  * Readme examples match current functionality
+  * Readme has a todo section
+  * Minitest documentation updated
+  * DirMonitor documentation updated
+* Code cleanups:
+  * Gemspec is a lot more readable
+  * Numerous refactorings in Minitest and DirMonitor
+  * Set extension has its own file
+
 === Version 0.3.1
 Minitest gained support to test Test::Unit tests and RSpec specs at the same time.
 

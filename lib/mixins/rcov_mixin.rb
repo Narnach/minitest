@@ -16,8 +16,8 @@ module RcovMixin
   end
 
   # Command line string to run rcov for all monitored specs.
-  def rcov
-    "#{rcov_cmd} -T --exclude \"#{rcov_ignores}\" -Ilib #{spec_cmd} -- " + known_specs.select{|s| File.exist?(s)}.join(" ")
+  def rcov(files)
+    "#{rcov_cmd} -T --exclude \"#{rcov_ignores}\" -Ilib #{spec_cmd} -- " + files.join(" ")
   end
 
   def rcov_cmd
@@ -27,8 +27,9 @@ module RcovMixin
   def trap_int_for_rcov
     Signal.trap("INT") do
       print "\nNow we run rcov and we're done.\n\n"
-      puts rcov
-      system rcov
+      specs = known_specs.select{|s| File.exist?(s)}
+      puts rcov(specs)
+      system rcov(specs)
       @active = false
     end
   end

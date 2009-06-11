@@ -26,3 +26,22 @@ desc 'Package and install the gem for the current version'
 task :install => :gem do
   system "sudo gem install -l pkg/%s-%s.gem" % [spec.name, spec.version]
 end
+
+desc 'Show files missing from gemspec'
+task :diff do
+  files = %w[
+    Rakefile
+    *README*
+    *LICENSE*
+    *.gemspec
+    bin/*
+    lib/**/*
+    spec/**/*
+  ].map {|pattern| Dir.glob(pattern)}.flatten.select{|f| File.file?(f)}
+  missing_files = files - spec.files
+  extra_files = spec.files - files
+  puts "Missing files:"
+  puts missing_files.join(" ")
+  puts "Extra files:"
+  puts extra_files.join(" ")
+end

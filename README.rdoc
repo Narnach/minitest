@@ -4,6 +4,20 @@ It can be used with 'plain' Ruby projects and Ruby on Rails.
 
 == Recent changes
 
+=== Version 0.3.3
+* Ruby 1.9 compatibility
+  * Changed Set#join to use #to_a instead of #map.
+  * Added workaround for gem not building on ruby 1.9.1p129
+* Tools
+  * Added rake task to detect files not added to the gemspec
+* Refactorings
+  * RspecMixin#rspec is now a public method with no default parameter
+  * Moved rspec functionality to RspecMixin
+  * Moved Rcov functionality into RcovMixin
+  * Define default specs to ignore in a constant instead of burying it in the code
+  * Moved trap_int_for_rcov back into Minitest
+  * Refactored rcov command to take the specs to check as its parameter
+
 === Version 0.3.2
 * Bugfixes:
   * Minitest will not run non-existent specs

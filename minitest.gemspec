@@ -3,8 +3,8 @@ Gem::Specification.new do |s|
   s.name         = 'minitest'
   s.summary      = "Minitest is a simple autotester tool."
   s.description  = "Minitest is a simple autotester tool, which uses rSpec and rCov to test ruby and rails projects."
-  s.version      = '0.3.2'
-  s.date         = '2008-08-14'
+  s.version      = '0.3.3'
+  s.date         = '2009-06-11'
   s.platform     = Gem::Platform::RUBY
   s.authors      = ["Wes Oldenbeuving"]
   s.email        = "narnach@gmail.com"

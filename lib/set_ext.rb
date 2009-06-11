@@ -2,7 +2,7 @@ require 'set'
 
 module SetExt
   def join(*args,&block)
-    map.join(*args,&block)
+    to_a.join(*args,&block)
   end
 end
 

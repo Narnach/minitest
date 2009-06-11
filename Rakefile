@@ -12,7 +12,9 @@ begin
   file = Dir['*.gemspec'].first
   data = File.read(file)
   spec = nil
-  Thread.new { spec = eval("$SAFE = 3\n%s" % data)}.join
+  # FIXME: Lowered SAFE from 3 to 2 to work with Ruby 1.9 due to rubygems
+  # performing a require internally
+  Thread.new { spec = eval("$SAFE = 2\n%s" % data)}.join
 
   # Create the gem tasks
   Rake::GemPackageTask.new(spec) do |package|
